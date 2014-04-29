@@ -4,9 +4,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     concat: {
-      dist: {
-        src: ['js/MainMenu.js',
-              'js/app.js'],
+      main: {
+        src: ['js/*'],
         dest: 'dest/yum.js'
       }
     },
@@ -15,13 +14,29 @@ module.exports = function(grunt) {
       main: {
         files: [
           {
-            src: ['index.html'],
-            dest: 'dest/index.html'
-          },
-          {
             expand: true,
             src: ['bower_components/**'],
             dest: 'dest'
+          }
+        ]
+      }
+    },
+
+    replace: {
+      main: {
+        options: {
+          patterns: [
+            {
+              match: /<!-- dev_mode[\w\W]* dev_mode -->/,
+              replacement: '<script src="yum.js"></script>'
+            }
+          ],
+          force: true
+        },
+        files: [
+          {
+            src: ['index.html'],
+            dest: 'dest/'
           }
         ]
       }
@@ -32,8 +47,9 @@ module.exports = function(grunt) {
   // Plugins
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-replace');
 
   // Tasks
-  grunt.registerTask('default', ['concat', 'copy']);
+  grunt.registerTask('default', ['concat', 'copy', 'replace']);
 
 };

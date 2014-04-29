@@ -2,18 +2,135 @@
 <html>
   <head>
     <title>Yum!</title>
+    <style>
+      .screen {display: none;}
+    </style>
   </head>
   <body>
 
-    <section id="main-menu">
-      <h1>{ title }</h1>
-      <button rv-on-click="start">Start</button>
+    <section id="main-menu" class="screen">
+      <h1>Yum!</h1>
+      <button id="new-game-button" rv-on-click="newGame">New Game</button>
+    </section>
+
+    <section id="new-game" class="screen">
+      <h1>New Game</h1>
+      <p>You are the new Head Chef for a magical village in a faraway land. You have 10 days to prove that you're the right person for the job, or they're going to find someone else. Every morning you visit 3 locations to get the ingredients you think you need to prepare delicious meals. Then you cook them in combinations that you think will taste good. If you don't make enough food for everyone, if you take too many ingredients and waste food, or if your food tastes bad, the village happiness goes down. If you make the right amount of food and it's delicious, their happiness goes up. See how happy you can make everyone in 10 days!</p>
+      <form rv-on-submit="begin">
+        <input id="character-name" rv-value="name" required>
+        <input type="submit" value="Begin" id="begin">
+      </form>
+    </section>
+
+    <section id="market" class="screen">
+
+      <h1>Market</h1>
+
+      <div rv-each-product="shop">
+        <h2>{ product.name }</h2>
+        <ul>
+          <span>Sweet: { product.sweet}</span>
+          <span>Sour: { product.sour}</span>
+          <span>Salty: { product.salty}</span>
+          <span>Bitter: { product.bitter}</span>
+          <span>Savory: { product.savory}</span>
+          <span>Fatty: { product.fatty}</span>
+        </ul>
+        <button rv-data-id="product.id" rv-on-click="take">Take 5 pounds</button>
+      </div>
+
+    </section>
+
+    <section id="kitchen" class="screen">
+
+      <h1>Kitchen</h1>
+
+      <h2>Choose Technique</h2>
+
+      <div>
+        <input type="checkbox"> Raw (1 ingredient)
+      </div>
+      <div>
+        <input type="checkbox"> Grilled (2 ingredients) (double savory)
+      </div>
+      <div>
+        <input type="checkbox"> Ice Cream (2 ingredients) (double sweet)
+      </div>
+      <div>
+        <input type="checkbox"> Soup (2 ingredients) (double sour)
+      </div>
+      <div>
+        <input type="checkbox"> Baked (2 ingredients) (double bitter)
+      </div>
+      <div>
+        <input type="checkbox"> Saut&eacute;ed (2 ingredients) (double salty)
+      </div>
+      <div>
+        <input type="checkbox"> Burger (2 ingredients) (double fatty)
+      </div>
+      <div>
+        <input type="checkbox"> Casserole (3 ingredients)
+      </div>
+
+      <h2>Choose Ingredients</h2>
+
+      <div>
+        <select></select>
+      </div>
+      <div>
+        <select></select>
+      </div>
+      <div>
+        <select></select>
+      </div>
+
+      <div>
+        <button>Cook!</button>
+      </div>
+
+    </section>
+
+    <section id="status" class="screen">
+
+      <h1>Inventory</h1>
+      <div><span id="ingredients-pounds">{ inventory.ingredientsPounds }</span> pounds of ingredients</div>
+      <div id="ingredients" rv-each-ingredient="inventory.ingredients">
+        <div>{ ingredient.name }</div>
+      </div>
+      <div><span id="food-pounds">{ inventory.foodPounds }</span> pounds of cooked food</div>
+      <div id="dishes" rv-each-dish="dishes">
+        <div>{ dish.name }</div>
+      </div>
+      <div><span id="food-needed">{ inventory.poundsNeeded }</span> pounds of cooked food are required per day.</div>
+
+      <h1>Status</h1>
+      <div>Village happiness: <span id="happiness">{ status.happiness }</span></div>
+      <div>Days left: <span id="days-left">{ status.daysLeft }</span></div>
+
+      <h1>Flavors</h1>
+      <p>Sweet clashes with savory.</p>
+      <p>Savory clashes with sweet.</p>
+      <p>Sour enhances sweet, clashes with bitter.</p>
+      <p>Bitter enhances sweet, clashes with sour.</p>
+      <p>Salty enhances savory, clashes with bitter.</p>
+      <p>Fatty enhances savory, clashes with sour.</p>
+
     </section>
 
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/rivets/dist/rivets.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="js/MainMenu.js"></script>
-    <script src="js/app.js"></script>
+
+    <!-- dev_mode -->
+    <script src="js/game.js"></script>
+    <script src="js/mainMenu.js"></script>
+    <script src="js/newGame.js"></script>
+    <script src="js/market.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/kitchen.js"></script>
+    <!-- dev_mode -->
+
+    <script>game.start();</script>
+
   </body>
 </html>
