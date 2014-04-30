@@ -47,6 +47,7 @@ window.game.market = (function() {
       currentShop = 0;
       $('#market').hide();
       $('#kitchen').show();
+      game.kitchen.setup();
     }
   }
 

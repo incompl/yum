@@ -3,7 +3,7 @@
   <head>
     <title>Yum!</title>
     <style>
-      .screen {display: none;}
+      .screen, .hidden {display: none;}
     </style>
   </head>
   <body>
@@ -47,45 +47,36 @@
 
       <h2>Choose Technique</h2>
 
-      <div>
-        <input type="checkbox"> Raw (1 ingredient)
-      </div>
-      <div>
-        <input type="checkbox"> Grilled (2 ingredients) (double savory)
-      </div>
-      <div>
-        <input type="checkbox"> Ice Cream (2 ingredients) (double sweet)
-      </div>
-      <div>
-        <input type="checkbox"> Soup (2 ingredients) (double sour)
-      </div>
-      <div>
-        <input type="checkbox"> Baked (2 ingredients) (double bitter)
-      </div>
-      <div>
-        <input type="checkbox"> Saut&eacute;ed (2 ingredients) (double salty)
-      </div>
-      <div>
-        <input type="checkbox"> Burger (2 ingredients) (double fatty)
-      </div>
-      <div>
-        <input type="checkbox"> Casserole (3 ingredients)
+      <div rv-each-technique="techniques">
+        <input type="radio" name="technique" rv-on-click="updateTechnique" rv-data-technique="technique.name">
+        { technique.name }
+        ({ technique.ingredients } ingredient)
+        ({ technique.special })
       </div>
 
       <h2>Choose Ingredients</h2>
 
-      <div>
-        <select></select>
+      <div id="ingredient-not-yet">
+        Choose a technique first.
       </div>
-      <div>
-        <select></select>
+      <div id="ingredient1" class="ingredient hidden">
+        <select rv-on-change="updateIngredients">
+          <option rv-each-ingredient="ingredients" rv-value="ingredient.id">{ ingredient.name }</option>
+        </select>
       </div>
-      <div>
-        <select></select>
+      <div id="ingredient2" class="ingredient hidden">
+        <select rv-on-change="updateIngredients">
+          <option rv-each-ingredient="ingredients" rv-value="ingredient.id">{ ingredient.name }</option>
+        </select>
+      </div>
+      <div id="ingredient3" class="ingredient hidden">
+        <select rv-on-change="updateIngredients">
+          <option rv-each-ingredient="ingredients" rv-value="ingredient.id">{ ingredient.name }</option>
+        </select>
       </div>
 
       <div>
-        <button>Cook!</button>
+        <button rv-on-click="cook">Cook!</button>
       </div>
 
     </section>
