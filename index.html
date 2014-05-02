@@ -45,31 +45,45 @@
 
       <h1>Kitchen</h1>
 
-      <h2>Choose Technique</h2>
+      <div id="cookin">
 
-      <div rv-each-technique="techniques">
-        <input type="radio" name="technique" class="technique" rv-on-click="updateTechnique" rv-data-technique="technique.name">
-        { technique.name }
-        ({ technique.ingredients } ingredient)
-        ({ technique.special })
-      </div>
+        <h2>Choose Technique</h2>
 
-      <h2>Choose Ingredients</h2>
-
-      <div id="ingredient-not-yet">
-        Choose a technique first.
-      </div>
-
-      <div id="choose-ingredients" class="hidden">
-        <p>{ currentTechnique }? { furtherIngredientsNeeded }</p>
-        <div rv-each-ingredient="ingredients">
-        <input type="checkbox" class="chosen-ingredient" rv-on-change="updateIngredients" rv-data-id="ingredient.id">
-          { ingredient.name }
+        <div rv-each-technique="techniques">
+          <input type="radio" name="technique" class="technique" rv-on-click="updateTechnique" rv-data-technique="technique.name">
+          { technique.name }
+          ({ technique.ingredients } ingredient)
+          ({ technique.special })
         </div>
+
+        <h2>Choose Ingredients</h2>
+
+        <div id="ingredient-not-yet">
+          Choose a technique first.
+        </div>
+
+        <div id="choose-ingredients" class="hidden">
+          <p>{ currentTechnique }? { furtherIngredientsNeeded }</p>
+          <div rv-each-ingredient="ingredients">
+          <input type="checkbox" class="chosen-ingredient" rv-on-change="updateIngredients" rv-data-id="ingredient.id">
+            { ingredient.name }
+          </div>
+        </div>
+
+        <div>
+          <button id="cook" rv-on-click="cook">Cook!</button>
+        </div>
+
       </div>
 
-      <div>
-        <button id="cook" rv-on-click="cook">Cook!</button>
+      <div id="kitchen-confirm" class="hidden">
+
+        <h2>Proceed with this menu?</h2>
+
+        <button>Let me think...</button>
+
+        <button>Let's eat!</button>
+
       </div>
 
       <h2>The Menu For This Evening</h2>

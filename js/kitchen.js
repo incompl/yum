@@ -133,7 +133,11 @@ window.game.kitchen = {
       var ingredient = _(game.kitchen.ingredients).where({
         id: id
       })[0];
+
       ingredients.push(ingredient);
+    });
+
+    ingredients.forEach(function(ingredient) {
       game.kitchen.ingredients =
           _(game.kitchen.ingredients).without(ingredient);
     });
@@ -155,7 +159,8 @@ window.game.kitchen = {
     game.kitchen.menu.push(dish);
 
     if (game.kitchen.ingredients.length < 1) {
-
+      $('#cookin').hide();
+      $('#kitchen-confirm').show();
     }
   }
 
