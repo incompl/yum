@@ -8,50 +8,62 @@ window.game.kitchen = {
   techniques: [
     {
       name: 'Raw',
+      dishName: 'Raw',
       ingredients: 1,
       special: ''
     },
     {
       name: 'Grilled',
+      dishName: 'Grilled',
       ingredients: 2,
       special: 'double savory'
     },
     {
       name: 'Ice Cream',
+      dishName: 'Ice Cream of',
       ingredients: 2,
       special: 'double sweet'
     },
     {
       name: 'Soup',
+      dishName: 'Soup of',
       ingredients: 2,
       special: 'double sour'
     },
     {
       name: 'Baked',
+      dishName: 'Baked',
       ingredients: 2,
       special: 'double bitter'
     },
     {
       name: 'Saut&eacute;ed',
+      dishName: 'Saut&eacute;ed',
       ingredients: 2,
       special: 'double salty'
     },
     {
       name: 'Burger',
+      dishName: 'Burger with',
       ingredients: 2,
       special: 'double fatty'
     },
     {
       name: 'Casserole',
+      dishName: 'Casserole of',
       ingredients: 3,
       special: ''
     }
   ],
 
   ingredients: [],
+  menu: [{name: 'Nothing yet'}],
+  currentTechnique: '',
+  ingredientsNeeded: 0,
+  furtherIngredientsNeeded: 0,
 
   setup: function() {
-    game.kitchen.ingredients = game.status.inventory.ingredients;
+    game.kitchen.ingredients = _.clone(game.status.inventory.ingredients);
     game.kitchen.updateIngredients();
   },
 
@@ -62,20 +74,12 @@ window.game.kitchen = {
     var technique = _(game.kitchen.techniques).where({
       name: techniqueName
     })[0];
+    game.kitchen.currentTechnique = technique.name;
+    game.kitchen.ingredientsNeeded = technique.ingredients;
 
     // Remove prompt to choose technique
     $('#ingredient-not-yet').hide();
-
-    // Only show dropdowns for the number of ingredients
-    // that this technique needs
-    $('.ingredient').hide();
-    $('#ingredient1').show();
-    if (technique.ingredients >= 2) {
-      $('#ingredient2').show();
-    }
-    if (technique.ingredients >= 3) {
-      $('#ingredient3').show();
-    }
+    $('#choose-ingredients').show();
 
     game.kitchen.updateIngredients();
   },
@@ -84,33 +88,75 @@ window.game.kitchen = {
   // disable ingredients used in a previous picker
   updateIngredients: function() {
 
-    // Start by enabling everything
-    $('.ingredient').find('option').prop('disabled', false);
+    var $button = $('#cook');
+    var result = '';
+    var numChecked = $('.chosen-ingredient:checked').length;
+    var numNeeded = game.kitchen.ingredientsNeeded - numChecked;
 
-    // Disable ingredient 1 in dropdowns 2 and 3
-    var ingredient1 = $('#ingredient1').find('option:selected').val();
-    $('#ingredient2, #ingredient3')
-    .find('[value="' + ingredient1 + '"]')
-    .prop('disabled', true);
+    $button.prop('disabled', true);
 
-    // Disable ingredient 2 in dropdown 3
-    var ingredient2 = $('#ingredient2').find('option:selected').val();
-    $('#ingredient3')
-    .find('[value="' + ingredient2 + '"]')
-    .prop('disabled', true);
-
-    // If a disabled option is selected, change to another option
-    $('#ingredient2, #ingredient3').each(function() {
-      var $selected = $(this).find('option:selected');
-      if ($selected.prop('disabled')) {
-        $selected.prop('selected', false);
+    if (numNeeded === game.kitchen.ingredientsNeeded) {
+      if (numNeeded === 1) {
+        result = 'Choose an ingredient.';
       }
-    });
+      else {
+        result = 'Choose ' + numNeeded + ' ingredients.';
+      }
+    }
+    else if (numNeeded > 0) {
+      if (numNeeded === 1) {
+        result = 'Choose 1 more ingredient.';
+      }
+      else {
+        result = 'Choose ' + numNeeded + ' more ingredients.';
+      }
+    }
+    else if (numNeeded === 0) {
+      result = 'You\'re good to go!';
+      $button.prop('disabled', false);
+    }
+    else {
+      result = 'You\'ve selected ' + Math.abs(numNeeded) +
+               ' too many ingredients.';
+    }
+
+    game.kitchen.furtherIngredientsNeeded = result;
 
   },
 
   cook: function() {
 
+    var ingredients = [];
+
+    $('.chosen-ingredient:checked').each(function() {
+      var id = Number($(this).attr('data-id'));
+      var ingredient = _(game.kitchen.ingredients).where({
+        id: id
+      })[0];
+      ingredients.push(ingredient);
+      game.kitchen.ingredients =
+          _(game.kitchen.ingredients).without(ingredient);
+    });
+
+    var technique = $('.technique:checked').attr('data-technique');
+
+    var dish = {
+      name: technique + ' of ' + _(ingredients).pluck('name').join(' and '),
+      ingredients: ingredients,
+      technique: technique
+    };
+
+    if (game.kitchen.menu[0].name === 'Nothing yet') {
+      game.kitchen.menu.pop();
+    }
+
+    game.kitchen.updateIngredients();
+
+    game.kitchen.menu.push(dish);
+
+    if (game.kitchen.ingredients.length < 1) {
+
+    }
   }
 
 };

@@ -48,7 +48,7 @@
       <h2>Choose Technique</h2>
 
       <div rv-each-technique="techniques">
-        <input type="radio" name="technique" rv-on-click="updateTechnique" rv-data-technique="technique.name">
+        <input type="radio" name="technique" class="technique" rv-on-click="updateTechnique" rv-data-technique="technique.name">
         { technique.name }
         ({ technique.ingredients } ingredient)
         ({ technique.special })
@@ -59,24 +59,23 @@
       <div id="ingredient-not-yet">
         Choose a technique first.
       </div>
-      <div id="ingredient1" class="ingredient hidden">
-        <select rv-on-change="updateIngredients">
-          <option rv-each-ingredient="ingredients" rv-value="ingredient.id">{ ingredient.name }</option>
-        </select>
-      </div>
-      <div id="ingredient2" class="ingredient hidden">
-        <select rv-on-change="updateIngredients">
-          <option rv-each-ingredient="ingredients" rv-value="ingredient.id">{ ingredient.name }</option>
-        </select>
-      </div>
-      <div id="ingredient3" class="ingredient hidden">
-        <select rv-on-change="updateIngredients">
-          <option rv-each-ingredient="ingredients" rv-value="ingredient.id">{ ingredient.name }</option>
-        </select>
+
+      <div id="choose-ingredients" class="hidden">
+        <p>{ currentTechnique }? { furtherIngredientsNeeded }</p>
+        <div rv-each-ingredient="ingredients">
+        <input type="checkbox" class="chosen-ingredient" rv-on-change="updateIngredients" rv-data-id="ingredient.id">
+          { ingredient.name }
+        </div>
       </div>
 
       <div>
-        <button rv-on-click="cook">Cook!</button>
+        <button id="cook" rv-on-click="cook">Cook!</button>
+      </div>
+
+      <h2>The Menu For This Evening</h2>
+
+      <div id="menu" rv-each-dish="menu">
+        { dish.name }
       </div>
 
     </section>
