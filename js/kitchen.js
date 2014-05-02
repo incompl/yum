@@ -58,7 +58,7 @@ window.game.kitchen = {
 
   ingredients: [],
   menu: [{name: 'Nothing yet'}],
-  currentTechnique: '',
+  currentTechnique: {},
   ingredientsNeeded: 0,
   furtherIngredientsNeeded: 0,
 
@@ -74,7 +74,7 @@ window.game.kitchen = {
     var technique = _(game.kitchen.techniques).where({
       name: techniqueName
     })[0];
-    game.kitchen.currentTechnique = technique.name;
+    game.kitchen.currentTechnique = technique;
     game.kitchen.ingredientsNeeded = technique.ingredients;
 
     // Remove prompt to choose technique
@@ -142,10 +142,15 @@ window.game.kitchen = {
           _(game.kitchen.ingredients).without(ingredient);
     });
 
-    var technique = $('.technique:checked').attr('data-technique');
+    var techniqueName = $('.technique:checked').attr('data-technique');
+
+    var technique = _(game.kitchen.techniques).where({
+      name: techniqueName
+    })[0];
 
     var dish = {
-      name: technique + ' of ' + _(ingredients).pluck('name').join(' and '),
+      name: technique.dishName + ' ' +
+          _(ingredients).pluck('name').join(' and '),
       ingredients: ingredients,
       technique: technique
     };
@@ -162,6 +167,16 @@ window.game.kitchen = {
       $('#cookin').hide();
       $('#kitchen-confirm').show();
     }
+  },
+
+  reset: function() {
+    // TODO
+  },
+
+  next: function() {
+    game.eating.start();
+    $('#kitchen').hide();
+    $('#eating').show();
   }
 
 };

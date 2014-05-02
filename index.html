@@ -63,7 +63,7 @@
         </div>
 
         <div id="choose-ingredients" class="hidden">
-          <p>{ currentTechnique }? { furtherIngredientsNeeded }</p>
+          <p>{ currentTechnique.name }? { furtherIngredientsNeeded }</p>
           <div rv-each-ingredient="ingredients">
           <input type="checkbox" class="chosen-ingredient" rv-on-change="updateIngredients" rv-data-id="ingredient.id">
             { ingredient.name }
@@ -76,20 +76,40 @@
 
       </div>
 
-      <div id="kitchen-confirm" class="hidden">
-
-        <h2>Proceed with this menu?</h2>
-
-        <button>Let me think...</button>
-
-        <button>Let's eat!</button>
-
-      </div>
-
       <h2>The Menu For This Evening</h2>
 
       <div id="menu" rv-each-dish="menu">
         { dish.name }
+      </div>
+
+      <div id="kitchen-confirm" class="hidden">
+
+        <h2>Proceed with this menu?</h2>
+        <button rv-on-click="reset">Let me think...</button>
+        <button rv-on-click="next">Let's eat!</button>
+
+      </div>
+
+    </section>
+
+    <section id="eating" class="screen">
+
+      <h1>The Great Hall of Eating</h1>
+
+      <h2>The Menu</h2>
+
+      <div id="eating-dishes" rv-each-dish="menu">
+        { dish.name }
+      </div>
+
+      <h2>{ currentDish.name }</h2>
+
+      <div id="dish-detail">
+        <div></div>
+      </div>
+
+      <div>
+        <button>Next dish!</button>
       </div>
 
     </section>
@@ -132,6 +152,7 @@
     <script src="js/market.js"></script>
     <script src="js/status.js"></script>
     <script src="js/kitchen.js"></script>
+    <script src="js/eating.js"></script>
     <!-- dev_mode -->
 
     <script>game.start();</script>
